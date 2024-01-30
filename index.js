@@ -33,21 +33,38 @@ app.get('/', (req, res) => {
 
 
 
-app.get('/api/cards',async(req,res)=>{
+app.get('/api/cards', async (req, res) => {
     try {
         const page = req.query.page ? parseInt(req.query.page) : 1;
         const limit = req.query.limit ? parseInt(req.query.limit) : 20;
         const offset = (page - 1) * limit;
-        const [rows] = await pool.query('SELECT * FROM Card');
-     
+        const [rows] = await pool.query(`
+        SELECT 
+        c.id,
+        c.image AS card_image,
+        c.heading,
+        c.price,
+        c.stars,
+        (
+            SELECT GROUP_CONCAT(cl.color) 
+            FROM colors cl 
+            WHERE c.id = cl.card_id
+        ) AS colors,
+        (
+            SELECT GROUP_CONCAT(cl.image) 
+            FROM colors cl 
+            WHERE c.id = cl.card_id
+        ) AS color_images
+    FROM 
+        Card c
+    
+            LIMIT ?, ?
+        `, [offset, limit]);
         res.json(rows);
     } catch (error) {
         console.error('Error fetching data:', error);
         res.status(500).json({ error: 'Internal Server Error' });
     }
-
-
-
 });
 
 app.listen(port,()=>{
