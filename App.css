@@ -1,0 +1,34 @@
+.App {
+  margin-top:150px;
+  margin-left:200px;
+  margin-right:200px;
+  /* justify-content:center; */
+  /* align-items:center;
+  height:100vh; */
+  /* margin-left:110px; */
+}
+/* @media only screen and (max-width:1100px){
+  .App{
+   margin-left:3px;
+   margin-right:3px;
+  }
+} */
+
+@media only screen and (max-width:710px){
+  .App{
+   margin-left:5px;
+   margin-right:5px;
+  }
+}
+@media only screen and (max-width:450px){
+  .App{
+   margin-left:3px;
+   margin-right:5px;
+  }
+}
+@media only screen and (max-width:590px){
+  .App{
+   margin-left:2px;
+   margin-right:5px;
+  }
+}

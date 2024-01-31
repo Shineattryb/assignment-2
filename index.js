@@ -1,72 +1,20 @@
-var mysql = require('mysql2/promise');
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import './index.css';
+import App from './App';
+import reportWebVitals from './reportWebVitals';
+import { AppProvider } from './context';
 
-var express=require('express');
-var cors= require('cors');
-const app=express();
-const port =8000;
-app.use(cors("*"));
-const pool = mysql.createPool({
-    host: 'monorail.proxy.rlwy.net',
-    user: 'root',
-    password: '3H1AA-3f6eE3FB3E2-A3bBaDDGe6DA1b',
-    database: 'railway',
-    port:'36742',
-    waitForConnections: true,
-    connectionLimit: 10,
-    queueLimit: 0
-    
-});
-pool.getConnection()
-    .then(connection => {
-        console.log('Connected to MySQL');
-        // connection.release();
-    })
-    .catch(error => {
-        console.error('Error connecting to MySQL:', error);
-    });
-app.get('/', (req, res) => {
-        res.send('Welcome to API!');
-});
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(
+  <React.StrictMode>
 
+    <App />
+   
+  </React.StrictMode>
+);
 
-
-
-
-
-app.get('/api/cards', async (req, res) => {
-    try {
-        const page = req.query.page ? parseInt(req.query.page) : 1;
-        const limit = req.query.limit ? parseInt(req.query.limit) : 20;
-        const offset = (page - 1) * limit;
-        const [rows] = await pool.query(`
-        SELECT 
-        c.id,
-        c.image AS card_image,
-        c.heading,
-        c.price,
-        c.stars,
-        (
-            SELECT GROUP_CONCAT(cl.color) 
-            FROM colors cl 
-            WHERE c.id = cl.card_id
-        ) AS colors,
-        (
-            SELECT GROUP_CONCAT(cl.image) 
-            FROM colors cl 
-            WHERE c.id = cl.card_id
-        ) AS color_images
-    FROM 
-        Card c
-    
-            LIMIT ?, ?
-        `, [offset, limit]);
-        res.json(rows);
-    } catch (error) {
-        console.error('Error fetching data:', error);
-        res.status(500).json({ error: 'Internal Server Error' });
-    }
-});
-
-app.listen(port,()=>{
-    console.log('server is running on port');
-})
+// If you want to start measuring performance in your app, pass a function
+// to log results (for example: reportWebVitals(console.log))
+// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
+reportWebVitals();

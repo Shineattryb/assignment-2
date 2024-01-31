@@ -1,0 +1,38 @@
+.nav-bar {
+   display:flex;
+   align-items:center;
+    justify-content:flex-end;
+    width: 100%;
+    height: 100px;
+    background-color: antiquewhite;
+    position:fixed;
+    top:0;
+    left:0;
+    z-index:999;
+    margin:auto;
+}
+
+.icon-2{
+    margin-right:15px;
+    font-size:2rem;
+/* position:absolute; */
+ 
+}
+.icon-right
+{
+    margin-right:auto;
+}
+.cart-count{
+    position:absolute;
+    top:12px;
+    right:3px;
+    color:white;
+    border:2px solid black;
+    
+    border-radius:50%;
+    background-color:black;
+    padding:3px;
+
+    
+   
+}

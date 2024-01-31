@@ -1,17 +1,54 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { IoBagOutline } from "react-icons/io5";
 import './card.css';
-function Card({card}) {
+import Star from './star';
+function Card({card,onAddToCart}) {
+  console.log(card)
+const [selectedColorIndex, setSelectedColorIndex]=useState(0);
+const[ishovered,setishovered]=useState(false);
+  if (!card||!card.colors || !card.color_images) {
+    return null; 
+  }
+  const colors = card.colors.split(',');
+  const colorImages = card.color_images.split(',');
+  const handleColorButtonClick = (index) => {
+    setSelectedColorIndex(index);
+  };
+  const handleMouseEnter = () => {
+    setishovered(true);
+  };
+
+  const handleMouseLeave = () => {
+    setishovered(false);
+  };
+ 
   return (
     <div className="card">
-<div className="image-container">
+<div className="image-container"   onMouseEnter={handleMouseEnter}  onMouseLeave={handleMouseLeave}>
 {/* <img src="https://pngimg.com/uploads/cap/cap_PNG5686.png" alt="cap-image"/> */}
-<img src={card.image} alt={`Image of ${card.color}`}  />
+<img src={colorImages[selectedColorIndex]} alt={`Image of ${colors[selectedColorIndex]}`}     
+         />
+{ishovered && (
+  <div className="icon-container" >
+  <IoBagOutline className="shopping-cart-icon" onClick={onAddToCart} />
+</div>
+)}                  
 </div>
 <div className="contact-details">
-    <p>{card.heading}</p> 
+    <p><b>{card.heading}</b></p> 
     <div className="mini-details">
-    <p >{card.color}</p>
+    {/* <p >{card.color}</p> */}
     <p><b>${card.price} </b></p>
+    <div className="color-buttons">
+           {colors.map((color,index)=>
+              <button key={index} className="color-button" style={{backgroundColor:color}} onClick={() => handleColorButtonClick(index)}  ></button>
+              )}
+    </div>
+    
+    <div className="stars-css">
+    <Star stars={card.stars}/>
+    </div>
+    
     </div>
 </div>
      
